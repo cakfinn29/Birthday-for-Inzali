@@ -71,11 +71,12 @@ body{
 
 .hidden{display:none;}
 
-/* Message */
+/* Message box */
 #giftText{
   margin:16px auto 0;
   max-width:72ch;
-  line-height:2;
+  line-height:2.2;          /* FIX: better spacing */
+  letter-spacing:.2px;
   text-align:left;
   padding:18px;
   border-radius:16px;
@@ -86,6 +87,12 @@ body{
 }
 #giftText.show{opacity:1;transform:translateY(0);}
 
+/* Paragraph spacing FIX */
+#giftText div{
+  margin-bottom:18px;
+}
+
+/* Word animation */
 .word{
   display:inline-block;
   margin-right:.22em;
@@ -94,7 +101,12 @@ body{
   transition:.45s;
 }
 .word.visible{opacity:1;transform:translateY(0);}
-.signature{margin-top:10px;text-align:right;font-weight:800;}
+
+.signature{
+  margin-top:10px;
+  text-align:right;
+  font-weight:800;
+}
 </style>
 </head>
 
@@ -110,7 +122,6 @@ body{
 
   <div class="question">Ready for your surprise, Inzali? 🎉</div>
 
-  <!-- ONLY ONE BUTTON -->
   <button id="continueBtn">Continue 🎁</button>
 
   <div id="giftText" class="hidden"></div>
@@ -140,6 +151,7 @@ function reveal(paragraphs){
   });
   giftText.appendChild(div);
  });
+
  const sign=document.createElement("div");
  sign.className="signature";
  sign.textContent="— Canzy 💛";
