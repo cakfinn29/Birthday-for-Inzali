@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Birthday Gift 🎂</title>
+  <title>Birthday Gift for Inzali 🎂</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
@@ -328,13 +328,13 @@
 
     <div class="title">Happy Birthday 🎂</div>
 
-    <div class="sub">A Birthday Gift for <b>My Favorite Person</b> ✨</div>
+    <div class="sub">A Birthday Gift for <b>Inzali</b> 💝</div>
 
     <p class="intro" id="introText">
       Click <b>YES</b> to open your birthday message 🎁
     </p>
 
-    <div class="question">Ready for your surprise? 🎉</div>
+    <div class="question">Ready for your surprise, Inzali? 🎉</div>
 
     <div class="btn-row">
       <button id="yesBtn" type="button">YES 🎁</button>
@@ -364,8 +364,8 @@
       const x = (rect.left + rect.width/2) - layerRect.left;
       const y = (rect.top  + rect.height/2) - layerRect.top;
 
-      const bits = ["🎉","🎊","✨","⭐","🎈","🎁"];
-      for(let i=0;i<26;i++){
+      const bits = ["🎉","🎊","✨","⭐","🎈","🎁","💝"];
+      for(let i=0;i<28;i++){
         const el = document.createElement("div");
         el.className = "confetti";
         el.textContent = bits[Math.floor(Math.random()*bits.length)];
@@ -402,7 +402,7 @@
       const sigWrap = document.createElement("div");
       sigWrap.className = "signature";
 
-      const signatureWords = "— From Canzy 💛".split(" ");
+      const signatureWords = "— Canzy 💛".split(" ");
       signatureWords.forEach(w=>{
         const s = document.createElement("span");
         s.className = "word";
@@ -429,12 +429,14 @@
     }
 
     yesBtn.addEventListener("click", ()=>{
+      // click sound
       try{
         clickSound.currentTime = 0;
         clickSound.volume = 0.95;
         clickSound.play();
       }catch(e){}
 
+      // background song
       try{
         bgSong.currentTime = 0;
         bgSong.volume = 0.80;
@@ -450,9 +452,11 @@
       requestAnimationFrame(()=>giftText.classList.add("show"));
 
       const paragraphs = [
-        "Happy Birthday! Today is all about you — your smile, your dreams, and everything that makes you special.",
-        "I’m proud of you for how far you’ve come, and excited for where you’re going next.",
-        "May this year bring you peace, joy, and so many beautiful moments you’ll never forget."
+        "Happy Birthday to the girl who changed my world.",
+        "You are the most beautiful chapter of my life. Every day with you feels like a blessing, but today is extra special because it’s the day the world received you.",
+        "Thank you for your love, your smile, your patience, and the way you make my heart feel safe. I promise to stand beside you, support your dreams, and love you more with every passing year.",
+        "May your birthday be as soft, warm, and magical as your hugs.",
+        "I love you more than words can explain. 🎂💘"
       ];
 
       revealParagraphs(giftText, paragraphs, 70);
@@ -461,6 +465,7 @@
       yesBtn.style.opacity = "0.88";
     });
 
+    // NO button runs away (fun)
     function moveNo(){
       const x = (Math.random()*260) - 130;
       const y = (Math.random()*180) - 90;
