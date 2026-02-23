@@ -41,13 +41,9 @@ body{
   background:
     radial-gradient(900px 520px at 50% 26%, rgba(255,255,255,.18), transparent 62%),
     linear-gradient(160deg,var(--deep),var(--soft));
-
-  /* ✅ FIX #2: make scrolling unlimited + start from top */
   display:flex;
-  justify-content:center;     /* keep centered horizontally */
-  align-items:flex-start;     /* allow page to grow down */
-  padding: 26px 14px 60px;    /* breathing room top/bottom */
-
+  align-items:center;
+  justify-content:center;
   overflow-y:auto; /* ✅ allow vertical scroll */
   position:relative;
 }
@@ -242,27 +238,6 @@ body.cinematic .card{
 .intro{margin:10px 0 8px; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 .question{margin:10px 0 14px;font-weight:800; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 
-/* Floating Name Effect */
-.floatingName{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
-  opacity:.18;
-  font-family:'Great Vibes',cursive;
-  font-size: clamp(64px, 10vw, 110px);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transform: rotate(-8deg);
-  filter: blur(.2px);
-  animation: floatName 6.5s ease-in-out infinite;
-}
-@keyframes floatName{
-  0%,100%{ transform: translateY(0) rotate(-8deg); }
-  50%{ transform: translateY(-10px) rotate(-6deg); }
-}
-
 /* Continue Button */
 #continueBtn{
   background:var(--pink);
@@ -309,7 +284,27 @@ body.cinematic .card{
   transition:.8s;
   position:relative;
   z-index:2;
+  overflow:hidden; /* for watermark */
 }
+
+/* ✅ Watermark INSIDE message box, centered + locked */
+#giftText::before{
+  content: attr(data-watermark);
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Great Vibes',cursive;
+  font-size: clamp(64px, 9vw, 120px);
+  opacity:.14;
+  transform: rotate(-8deg);
+  pointer-events:none;
+  z-index:0;
+}
+/* keep typed text above watermark */
+#giftText > *{ position:relative; z-index:1; }
+
 #giftText.show{opacity:1;transform:translateY(0);}
 
 /* Typewriter lines */
@@ -356,9 +351,7 @@ body.cinematic .card{
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.06));
   position: relative;
-
-  /* ✅ FIX #1: allow candle/flame to show above cake */
-  overflow: visible;
+  overflow:hidden;
 }
 .sprinkle{
   position:absolute;
@@ -435,7 +428,6 @@ body.cinematic .card{
 }
 .photoWrap.show{ display:block; }
 
-/* ✅ center photos */
 .photoGrid{
   display:flex;
   gap:14px;
@@ -468,7 +460,6 @@ body.cinematic .card{
   transform: scale(1);
 }
 
-/* ✅ clickable "Secret present" */
 .secretBtn{
   display:inline-flex;
   gap:10px;
@@ -583,8 +574,6 @@ body.cinematic .card{
   </div>
 
   <div class="card">
-    <div class="floatingName">Inzali</div>
-
     <div class="title">Happy Birthday 🎂</div>
     <div class="sub">A Birthday Gift for <b>Inzali</b> 💝</div>
 
@@ -592,7 +581,7 @@ body.cinematic .card{
       Click <b>Continue</b> to open your birthday message 🎁
     </p>
 
-    <div class="question">Ready for your surprise, Inzali? 🎉</div>
+    <div class="question" id="questionText">Ready for your surprise, Inzali? 🎉</div>
 
     <button id="continueBtn" type="button">Continue 🎁</button>
 
@@ -618,18 +607,16 @@ body.cinematic .card{
       <div class="candleHint" id="candleHint">✨ Click the flame (or cake) to blow the candle</div>
     </div>
 
-    <!-- Message -->
-    <div id="giftText" class="hidden"></div>
+    <!-- Message (watermark centered INSIDE) -->
+    <div id="giftText" class="hidden" data-watermark="Inzali"></div>
 
     <!-- Photo reveal -->
     <div class="photoWrap" id="photoWrap">
       <div class="photoGrid">
-        <!-- Photo 1 -->
         <div class="photo" id="photoBox1" data-full="photo.jpg">
           <img id="photoImg1" src="photo.jpg" alt="A special photo" />
         </div>
 
-        <!-- Photo 2 (hidden until secret clicked) -->
         <div class="photo hidden" id="photoBox2" data-full="photo2.jpg">
           <img id="photoImg2" src="photo2.jpg" alt="A secret photo" />
         </div>
@@ -651,18 +638,25 @@ body.cinematic .card{
   </div>
   <div class="lightboxHint" id="lightboxHint" style="display:none;">Click anywhere to close</div>
 
-  <!-- Audio files -->
+  <!-- Audio -->
   <audio id="song" src="birthday.mp3" preload="auto"></audio>
   <audio id="click" src="click.mp3" preload="auto"></audio>
 
 <script>
+/* =========================
+   SETTINGS YOU CAN EDIT
+========================= */
 const LOVE_START = new Date("2024-01-01T00:00:00");
 const TYPE_SPEED = 18;
 const SONG_MAX_VOL = 0.8;
 
+/* =========================
+   ELEMENTS
+========================= */
 const btn = document.getElementById("continueBtn");
 const text = document.getElementById("giftText");
 const intro = document.getElementById("introText");
+const questionText = document.getElementById("questionText"); // ✅ new
 const song = document.getElementById("song");
 const click = document.getElementById("click");
 
@@ -689,10 +683,16 @@ const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 const lightboxHint = document.getElementById("lightboxHint");
 
+/* =========================
+   CINEMATIC INTRO ON LOAD
+========================= */
 window.addEventListener("load", () => {
   setTimeout(()=>document.body.classList.add("cinematic"), 220);
 });
 
+/* =========================
+   STAR BACKGROUND MODE
+========================= */
 let starOn = false;
 starBtn.addEventListener("click", ()=>{
   starOn = !starOn;
@@ -700,6 +700,9 @@ starBtn.addEventListener("click", ()=>{
   starBtn.textContent = starOn ? "✨ Normal" : "⭐ Starry";
 });
 
+/* =========================
+   STARS CANVAS (deep sky blue)
+========================= */
 const sctx = starsCanvas.getContext("2d");
 let stars = [];
 function resizeStars(){
@@ -739,6 +742,9 @@ window.addEventListener("resize", resizeStars);
 resizeStars();
 drawStars();
 
+/* =========================
+   CONFETTI
+========================= */
 const cctx = confettiCanvas.getContext("2d");
 let confetti = [];
 function resizeConfetti(){
@@ -789,6 +795,9 @@ function drawConfetti(){
 }
 drawConfetti();
 
+/* =========================
+   AUDIO
+========================= */
 function playSongFadeIn(audio, duration = 2500){
   audio.volume = 0;
   audio.currentTime = 0;
@@ -796,6 +805,7 @@ function playSongFadeIn(audio, duration = 2500){
   const steps = 24;
   const stepTime = duration / steps;
   let i = 0;
+
   const fade = setInterval(()=>{
     i++;
     audio.volume = Math.min(SONG_MAX_VOL, (i/steps) * SONG_MAX_VOL);
@@ -803,33 +813,46 @@ function playSongFadeIn(audio, duration = 2500){
   }, stepTime);
 }
 
+/* =========================
+   TYPEWRITER
+========================= */
 function splitIntoSentences(paragraph){
-  const parts = paragraph.replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?\s*/g);
+  const parts = paragraph
+    .replace(/\s+/g, " ")
+    .trim()
+    .match(/[^.!?]+[.!?]?\s*/g);
   return parts ? parts.map(s=>s.trim()).filter(Boolean) : [paragraph.trim()];
 }
-async function typeLine(el, t){
+async function typeLine(el, textToType){
   el.textContent = "";
-  for(let i=0;i<t.length;i++){
-    el.textContent += t[i];
+  for(let i=0;i<textToType.length;i++){
+    el.textContent += textToType[i];
     await new Promise(r=>setTimeout(r, TYPE_SPEED));
   }
 }
 async function typewriterMessage(container, paragraphs){
   container.innerHTML = "";
   const lines = [];
-  paragraphs.forEach(p => splitIntoSentences(p).forEach(s => lines.push(s)));
+  paragraphs.forEach(p => {
+    splitIntoSentences(p).forEach(sentence => lines.push(sentence));
+  });
+
   for(const lineText of lines){
     const line = document.createElement("div");
     line.className = "line";
     container.appendChild(line);
     await typeLine(line, lineText);
   }
+
   const sig = document.createElement("div");
   sig.className = "signature";
   container.appendChild(sig);
   await typeLine(sig, "— Canzy 💛");
 }
 
+/* =========================
+   LOVE COUNTER
+========================= */
 function formatDuration(ms){
   const s = Math.floor(ms/1000);
   const days = Math.floor(s / 86400);
@@ -841,13 +864,17 @@ function formatDuration(ms){
 function startCounter(){
   counterRow.classList.remove("hidden");
   const tick = ()=>{
-    const diff = new Date() - LOVE_START;
+    const now = new Date();
+    const diff = now - LOVE_START;
     counterText.textContent = `⏳ Love counter: ${formatDuration(diff)}`;
   };
   tick();
   setInterval(tick, 1000);
 }
 
+/* =========================
+   CANDLE BLOW
+========================= */
 let candleBlown = false;
 function blowCandle(){
   if(candleBlown) return;
@@ -870,6 +897,9 @@ function blowCandle(){
 flame.addEventListener("click", blowCandle);
 cake.addEventListener("click", blowCandle);
 
+/* =========================
+   SECRET PRESENT
+========================= */
 function showSecondPhoto(){
   if(!photoBox2.classList.contains("hidden")) return;
   photoBox2.classList.remove("hidden");
@@ -877,10 +907,11 @@ function showSecondPhoto(){
   secretNote.textContent = "Now you have two memories 💞";
 }
 secretBtn.addEventListener("click", showSecondPhoto);
-secretBtn.addEventListener("keydown", (e)=>{
-  if(e.key==="Enter" || e.key===" "){ e.preventDefault(); showSecondPhoto(); }
-});
+secretBtn.addEventListener("keydown", (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); showSecondPhoto(); }});
 
+/* =========================
+   LIGHTBOX
+========================= */
 function openLightbox(src){
   lightboxImg.src = src;
   lightbox.classList.add("show");
@@ -897,6 +928,9 @@ lightbox.addEventListener("click", closeLightbox);
 photoBox1.addEventListener("click", ()=>openLightbox(photoBox1.dataset.full));
 photoBox2.addEventListener("click", ()=>openLightbox(photoBox2.dataset.full));
 
+/* =========================
+   MAIN CLICK (Continue)
+========================= */
 btn.onclick = async ()=>{
   try{
     click.currentTime = 0;
@@ -908,9 +942,15 @@ btn.onclick = async ()=>{
   document.body.classList.add("cinematic");
 
   const r = btn.getBoundingClientRect();
-  confettiBurst((r.left + r.width/2) * devicePixelRatio, (r.top + r.height/2) * devicePixelRatio);
+  const cx = (r.left + r.width/2) * devicePixelRatio;
+  const cy = (r.top + r.height/2) * devicePixelRatio;
+  confettiBurst(cx, cy);
 
   intro.style.display = "none";
+
+  /* ✅ CHANGE #1: remove "Ready for your surprise, Inzali?" after Continue */
+  questionText.style.display = "none";
+
   btn.classList.add("fade");
   setTimeout(()=>btn.style.display="none", 350);
 
@@ -928,6 +968,7 @@ btn.onclick = async ()=>{
     "May your birthday be as soft, warm, and magical as your hugs.",
     "I love you more than words can explain. 🎂💘"
   ];
+
   await typewriterMessage(text, paragraphs);
 };
 </script>
