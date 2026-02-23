@@ -26,7 +26,7 @@
 *{box-sizing:border-box;}
 html,body{height:100%;}
 
-/* ✅ FIX #2: allow vertical scrolling */
+/* ✅ Scroll fix (so you can reach everything) */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
@@ -35,11 +35,11 @@ body{
     radial-gradient(900px 520px at 50% 26%, rgba(255,255,255,.18), transparent 62%),
     linear-gradient(160deg,var(--deep),var(--soft));
   overflow-x:hidden;
-  overflow-y:auto;               /* ✅ important */
+  overflow-y:auto;
   position:relative;
 }
 
-/* ✅ Wrapper keeps card centered while still scrollable */
+/* keep the centered layout */
 .page{
   min-height:100vh;
   display:flex;
@@ -63,7 +63,6 @@ body{
 }
 body.cinematic .cinema{ opacity:1; }
 
-/* subtle film grain */
 .cinema::after{
   content:"";
   position:absolute;
@@ -109,7 +108,7 @@ body.starry #starsCanvas{ opacity:1; }
 }
 .modeToggle button:active{ transform: translateY(1px); }
 
-/* ===== MORE Floating Side Stickers ===== */
+/* ===== Floating Side Stickers ===== */
 .side{
   position:fixed;
   top:0;
@@ -199,7 +198,9 @@ body.starry #starsCanvas{ opacity:1; }
   opacity: 0;
   animation: introIn 1200ms cubic-bezier(.2,.9,.2,1) forwards;
 }
-@keyframes introIn{ to{ transform: translateY(0) scale(1); opacity:1; } }
+@keyframes introIn{
+  to{ transform: translateY(0) scale(1); opacity:1; }
+}
 body.cinematic .card{
   transform: translateY(-2px) scale(1.02);
   transition: transform 900ms ease, filter 900ms ease;
@@ -305,10 +306,19 @@ body.cinematic .card{
 }
 #giftText.show{opacity:1;transform:translateY(0);}
 
-.line{ margin:0 0 16px 0; min-height: 1em; }
+/* Typewriter lines */
+.line{
+  margin:0 0 16px 0;
+  min-height: 1em;
+}
 .line:last-child{ margin-bottom: 10px; }
 
-.signature{ margin-top:10px; text-align:right; font-weight:800; opacity:.95; }
+.signature{
+  margin-top:10px;
+  text-align:right;
+  font-weight:800;
+  opacity:.95;
+}
 
 /* ===== Candle Section ===== */
 .candleWrap{
@@ -328,26 +338,19 @@ body.cinematic .card{
   padding: 14px 14px 12px;
   position: relative;
   box-shadow: 0 18px 44px rgba(0,0,0,.20);
-
-  /* ✅ FIX #1: make cake/candle more visible */
-  outline: 1px solid rgba(255,255,255,.10);
-  backdrop-filter: blur(8px);
 }
 .cakeTop{
   height: 20px;
   border-radius: 14px;
-  background: linear-gradient(90deg, rgba(255,255,255,.26), rgba(255,255,255,.12));
+  background: linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
   margin-bottom: 10px;
 }
 .cakeBody{
   height: 56px;
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.08));
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.08));
   position: relative;
   overflow:hidden;
-
-  /* extra contrast so it doesn't disappear */
-  border: 1px solid rgba(255,255,255,.10);
 }
 .sprinkle{
   position:absolute;
@@ -355,7 +358,7 @@ body.cinematic .card{
   width: 8px; height: 3px;
   border-radius: 999px;
   background: rgba(255,255,255,.75);
-  opacity:.95;
+  opacity:.9;
 }
 .candle{
   position:absolute;
@@ -365,9 +368,8 @@ body.cinematic .card{
   width: 16px;
   height: 38px;
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.60));
-  box-shadow: 0 8px 16px rgba(0,0,0,.22);
-  z-index: 3;
+  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.55));
+  box-shadow: 0 8px 16px rgba(0,0,0,.20);
 }
 .wick{
   position:absolute;
@@ -377,7 +379,6 @@ body.cinematic .card{
   width: 3px; height: 8px;
   border-radius: 2px;
   background: rgba(30,30,30,.8);
-  z-index: 4;
 }
 .flame{
   position:absolute;
@@ -386,11 +387,10 @@ body.cinematic .card{
   transform: translateX(-50%);
   width: 18px; height: 26px;
   border-radius: 50% 50% 50% 50%;
-  background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.92), rgba(255,200,80,.95) 45%, rgba(255,90,140,.95) 100%);
+  background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.9), rgba(255,200,80,.9) 45%, rgba(255,90,140,.9) 100%);
   filter: drop-shadow(0 0 10px rgba(255,180,90,.95)) drop-shadow(0 0 18px rgba(255,120,200,.55));
   animation: flicker 120ms infinite alternate;
   cursor:pointer;
-  z-index: 5; /* ✅ always on top */
 }
 @keyframes flicker{
   from{ transform: translateX(-50%) scale(1) rotate(-2deg); opacity: .95; }
@@ -404,9 +404,10 @@ body.cinematic .card{
   font-size: 18px;
   opacity:0;
   filter: blur(0.2px);
-  z-index: 6;
 }
-.smoke.run{ animation: smokeUp 1200ms ease-out forwards; }
+.smoke.run{
+  animation: smokeUp 1200ms ease-out forwards;
+}
 @keyframes smokeUp{
   0%{ opacity:0; transform: translateX(-50%) translateY(0) scale(.9); }
   15%{ opacity:.75; }
@@ -418,19 +419,36 @@ body.cinematic .card{
   text-shadow: 0 8px 22px rgba(0,0,0,.35);
 }
 
-/* ===== Hidden Photo Reveal ===== */
+/* ===== Photos (UPDATED) ===== */
 .photoWrap{
   margin-top: 14px;
   display:none;
+  text-align:center;
 }
 .photoWrap.show{ display:block; }
-.photo{
+
+.photosGrid{
+  margin-top: 10px;
+  display:flex;
+  gap:14px;
+  justify-content:center;   /* ✅ centered */
+  align-items:flex-start;
+  flex-wrap:wrap;           /* ✅ works on small screens */
+}
+
+.photoCard{
   width:min(520px, 100%);
+  text-align:center;
+}
+.photo{
+  width:100%;
   border-radius: 18px;
   border:1px solid rgba(255,255,255,.18);
   box-shadow: 0 18px 50px rgba(0,0,0,.22);
   overflow:hidden;
   background: rgba(0,0,0,.18);
+  margin: 0 auto; /* ✅ centered */
+  cursor: zoom-in; /* ✅ hint that it's clickable */
 }
 .photo img{
   width:100%;
@@ -445,6 +463,24 @@ body.cinematic .card{
   filter: blur(0) brightness(1);
   transform: scale(1);
 }
+
+/* ✅ Clickable "Secret present" button */
+.secretBtn{
+  margin: 10px auto 0;
+  border:none;
+  cursor:pointer;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.95);
+  font-weight: 800;
+  box-shadow: 0 14px 30px rgba(0,0,0,.14);
+  transition: transform .08s ease, opacity .2s ease;
+}
+.secretBtn:active{ transform: translateY(1px); }
+.secretBtn.hidden{ display:none; }
+
 .photoCaption{
   padding: 10px 12px;
   font-weight: 700;
@@ -472,6 +508,38 @@ body.cinematic .card{
   letter-spacing: .2px;
 }
 
+/* ===== Lightbox (full-size photo view) ===== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.72);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  z-index: 9999;
+}
+.lightbox.show{ display:flex; }
+.lightbox img{
+  max-width: min(980px, 96vw);
+  max-height: 92vh;
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0,0,0,.55);
+}
+.lightbox .close{
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  border: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.95);
+  border: 1px solid rgba(255,255,255,.18);
+}
+
 /* Mobile hide stickers */
 @media(max-width:820px){
   .side{display:none;}
@@ -488,7 +556,7 @@ body.cinematic .card{
     <button id="starBtn" type="button">⭐ Starry</button>
   </div>
 
-  <!-- Left Stickers (MORE) -->
+  <!-- Left Stickers -->
   <div class="side left">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -498,7 +566,7 @@ body.cinematic .card{
     </div>
   </div>
 
-  <!-- Right Stickers (MORE) -->
+  <!-- Right Stickers -->
   <div class="side right">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -508,7 +576,6 @@ body.cinematic .card{
     </div>
   </div>
 
-  <!-- ✅ wrapper for scrolling + centering -->
   <div class="page">
     <div class="card">
       <div class="floatingName">Inzali</div>
@@ -524,7 +591,7 @@ body.cinematic .card{
 
       <button id="continueBtn" type="button">Continue 🎁</button>
 
-      <!-- Candle (appears after Continue) -->
+      <!-- Candle -->
       <div class="candleWrap hidden" id="candleWrap">
         <div class="cake" id="cake" aria-label="birthday cake">
           <div class="cakeTop"></div>
@@ -549,12 +616,25 @@ body.cinematic .card{
       <!-- Message -->
       <div id="giftText" class="hidden"></div>
 
-      <!-- Photo reveal -->
+      <!-- Photo reveal area -->
       <div class="photoWrap" id="photoWrap">
-        <div class="photo" id="photoBox">
-          <img id="photoImg" src="photo.jpg" alt="A special photo" />
+        <div class="photosGrid" id="photosGrid">
+          <!-- Photo 1 -->
+          <div class="photoCard" id="photoCard1">
+            <div class="photo" id="photoBox1">
+              <img id="photoImg1" src="photo.jpg" alt="A special photo 1" />
+            </div>
+          </div>
+
+          <!-- Photo 2 (hidden until secret present) -->
+          <div class="photoCard hidden" id="photoCard2">
+            <div class="photo" id="photoBox2">
+              <img id="photoImg2" src="photo2.jpg" alt="A special photo 2" />
+            </div>
+          </div>
         </div>
-        <div class="photoCaption">A little memory for you 💗</div>
+
+        <button class="secretBtn" id="secretBtn" type="button">🎁 Secret present</button>
       </div>
 
       <!-- Love counter -->
@@ -564,6 +644,13 @@ body.cinematic .card{
     </div>
   </div>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <button class="close" id="lightboxClose" type="button">✕ Close</button>
+    <img id="lightboxImg" alt="Full size photo" />
+  </div>
+
+  <!-- Audio -->
   <audio id="song" src="birthday.mp3" preload="auto"></audio>
   <audio id="click" src="click.mp3" preload="auto"></audio>
 
@@ -591,7 +678,13 @@ const smoke = document.getElementById("smoke");
 const candleHint = document.getElementById("candleHint");
 
 const photoWrap = document.getElementById("photoWrap");
-const photoBox = document.getElementById("photoBox");
+const photoCard2 = document.getElementById("photoCard2");
+const secretBtn = document.getElementById("secretBtn");
+
+const photoBox1 = document.getElementById("photoBox1");
+const photoBox2 = document.getElementById("photoBox2");
+const photoImg1 = document.getElementById("photoImg1");
+const photoImg2 = document.getElementById("photoImg2");
 
 const counterRow = document.getElementById("counterRow");
 const counterText = document.getElementById("counterText");
@@ -599,6 +692,10 @@ const counterText = document.getElementById("counterText");
 const starBtn = document.getElementById("starBtn");
 const starsCanvas = document.getElementById("starsCanvas");
 const confettiCanvas = document.getElementById("confettiCanvas");
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxClose = document.getElementById("lightboxClose");
 
 /* =========================
    CINEMATIC INTRO ON LOAD
@@ -618,7 +715,7 @@ starBtn.addEventListener("click", ()=>{
 });
 
 /* =========================
-   STARS CANVAS
+   STARS CANVAS  (✅ deeper dark sky blue)
 ========================= */
 const sctx = starsCanvas.getContext("2d");
 let stars = [];
@@ -627,23 +724,26 @@ function resizeStars(){
   starsCanvas.height = window.innerHeight * devicePixelRatio;
   starsCanvas.style.width = window.innerWidth + "px";
   starsCanvas.style.height = window.innerHeight + "px";
+
   const count = Math.floor((window.innerWidth * window.innerHeight) / 14000);
   stars = Array.from({length: count}, ()=>({
     x: Math.random() * starsCanvas.width,
     y: Math.random() * starsCanvas.height,
-    r: (Math.random()*1.6 + 0.4) * devicePixelRatio,
-    a: Math.random()*0.6 + 0.2,
+    r: (Math.random()*1.7 + 0.35) * devicePixelRatio,
+    a: Math.random()*0.65 + 0.15,
     tw: Math.random()*0.02 + 0.008
   }));
 }
 function drawStars(){
   sctx.clearRect(0,0,starsCanvas.width, starsCanvas.height);
-  sctx.fillStyle = "rgba(0,0,0,0.12)";
+
+  // ✅ deep dark sky blue overlay (only visible when starry is on)
+  sctx.fillStyle = "rgba(6, 14, 38, 0.30)";
   sctx.fillRect(0,0,starsCanvas.width, starsCanvas.height);
 
   for(const st of stars){
     st.a += st.tw * (Math.random() > 0.5 ? 1 : -1);
-    st.a = Math.max(0.08, Math.min(0.9, st.a));
+    st.a = Math.max(0.08, Math.min(0.95, st.a));
     sctx.beginPath();
     sctx.fillStyle = `rgba(255,255,255,${st.a})`;
     sctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
@@ -772,12 +872,31 @@ function formatDuration(ms){
 function startCounter(){
   counterRow.classList.remove("hidden");
   const tick = ()=>{
-    const now = new Date();
-    counterText.textContent = `⏳ Love counter: ${formatDuration(now - LOVE_START)}`;
+    counterText.textContent = `⏳ Love counter: ${formatDuration(new Date() - LOVE_START)}`;
   };
   tick();
   setInterval(tick, 1000);
 }
+
+/* =========================
+   LIGHTBOX (full size photo)
+========================= */
+function openLightbox(src){
+  lightboxImg.src = src;
+  lightbox.classList.add("show");
+}
+function closeLightbox(){
+  lightbox.classList.remove("show");
+  lightboxImg.src = "";
+}
+lightboxClose.addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", (e)=>{
+  if(e.target === lightbox) closeLightbox();
+});
+
+/* Make both photos clickable */
+photoBox1.addEventListener("click", ()=> openLightbox(photoImg1.src));
+photoBox2.addEventListener("click", ()=> openLightbox(photoImg2.src));
 
 /* =========================
    CANDLE BLOW
@@ -797,21 +916,39 @@ function blowCandle(){
 
   candleHint.textContent = "A wish for you… 💫";
 
+  // reveal photos area
   setTimeout(()=>{
     photoWrap.classList.add("show");
-    setTimeout(()=>photoBox.classList.add("revealed"), 180);
+    // unblur photo 1 only
+    setTimeout(()=>document.getElementById("photoBox1").classList.add("revealed"), 180);
+    // scroll to photos nicely
+    setTimeout(()=>photoWrap.scrollIntoView({behavior:"smooth", block:"center"}), 420);
   }, 650);
 }
 flame.addEventListener("click", blowCandle);
 
-/* ✅ FIX #1 extra: clicking the cake also blows candle */
-cake.addEventListener("click", (e)=>{
-  // only if the click wasn't on button etc
-  blowCandle();
+/* also clicking cake works */
+cake.addEventListener("click", blowCandle);
+
+/* =========================
+   SECRET PRESENT (show photo2)
+========================= */
+secretBtn.addEventListener("click", ()=>{
+  // show 2nd photo card and reveal it
+  photoCard2.classList.remove("hidden");
+  setTimeout(()=>document.getElementById("photoBox2").classList.add("revealed"), 120);
+
+  // optional: change button text after open
+  secretBtn.textContent = "✨ Present opened!";
+  secretBtn.disabled = true;
+  secretBtn.style.opacity = "0.85";
+
+  // keep both photos centered in view
+  setTimeout(()=>photoWrap.scrollIntoView({behavior:"smooth", block:"center"}), 250);
 });
 
 /* =========================
-   MAIN CLICK
+   MAIN CLICK (Continue)
 ========================= */
 btn.onclick = async ()=>{
   try{
@@ -847,7 +984,7 @@ btn.onclick = async ()=>{
 
   await typewriterMessage(text, paragraphs);
 
-  /* ✅ optional: after everything appears, scroll a little so user sees candle+text */
+  // gentle scroll down so candle/text are visible
   setTimeout(()=>window.scrollBy({ top: 120, behavior: "smooth" }), 250);
 };
 </script>
