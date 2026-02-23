@@ -21,10 +21,18 @@
 
   --vignette: rgba(0,0,0,.35);
   --warm: rgba(255,120,200,.18);
+
+  /* Starry mode deep sky */
+  --skyTop:#061a3a;
+  --skyMid:#0a2550;
+  --skyBot:#040b1a;
 }
 
 *{box-sizing:border-box;}
 html,body{height:100%;}
+
+/* ✅ remove horizontal scrollbar */
+html, body { overflow-x:hidden; }
 
 body{
   margin:0;
@@ -34,14 +42,9 @@ body{
     radial-gradient(900px 520px at 50% 26%, rgba(255,255,255,.18), transparent 62%),
     linear-gradient(160deg,var(--deep),var(--soft));
   display:flex;
-
-  /* ✅ FIX: allow scroll instead of being stuck */
-  align-items:flex-start;
+  align-items:center;
   justify-content:center;
-  overflow-y:auto;
-  overflow-x:hidden;
-  padding: 18px 14px;
-
+  overflow-y:auto; /* ✅ allow vertical scroll */
   position:relative;
 }
 
@@ -106,12 +109,12 @@ body.starry #starsCanvas{ opacity:1; }
 }
 .modeToggle button:active{ transform: translateY(1px); }
 
-/* ===== MORE Floating Side Stickers ===== */
+/* ===== Floating Side Stickers ===== */
 .side{
   position:fixed;
   top:0;
   bottom:0;
-  width:300px;
+  width:min(300px, 22vw);
   pointer-events:none;
   display:flex;
   align-items:center;
@@ -149,6 +152,7 @@ body.starry #starsCanvas{ opacity:1; }
 .float:nth-child(15){left:88%; }
 .float:nth-child(16){left:52%; }
 
+/* varied timing */
 .float:nth-child(odd){animation-duration:7.6s;}
 .float:nth-child(even){animation-duration:6.0s;}
 .float:nth-child(3n){animation-duration:8.4s;}
@@ -181,7 +185,7 @@ body.starry #starsCanvas{ opacity:1; }
 
 /* ===== Card ===== */
 .card{
-  width:min(760px,100%);
+  width:min(760px, calc(100vw - 28px));
   background:var(--card-bg);
   border:1px solid var(--card-stroke);
   border-radius:24px;
@@ -195,11 +199,6 @@ body.starry #starsCanvas{ opacity:1; }
   transform: translateY(10px) scale(.985);
   opacity: 0;
   animation: introIn 1200ms cubic-bezier(.2,.9,.2,1) forwards;
-
-  /* ✅ FIX: allow inner scroll if content becomes tall */
-  max-height: calc(100vh - 36px);
-  overflow:auto;
-  -webkit-overflow-scrolling: touch;
 }
 @keyframes introIn{
   to{ transform: translateY(0) scale(1); opacity:1; }
@@ -236,7 +235,6 @@ body.cinematic .card{
   pointer-events:none;
 }
 .sub{font-weight:800;margin-bottom:8px; text-shadow:0 8px 22px rgba(0,0,0,.35);}
-
 .intro{margin:10px 0 8px; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 .question{margin:10px 0 14px;font-weight:800; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 
@@ -310,6 +308,7 @@ body.cinematic .card{
 }
 #giftText.show{opacity:1;transform:translateY(0);}
 
+/* Typewriter lines */
 .line{
   margin:0 0 16px 0;
   min-height: 1em;
@@ -323,9 +322,9 @@ body.cinematic .card{
   opacity:.95;
 }
 
-/* ===== Candle Section ===== */
+/* ===== Candle Section (VISIBLE + BETTER LOOK) ===== */
 .candleWrap{
-  margin: 14px auto 6px;
+  margin: 14px auto 10px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -333,47 +332,46 @@ body.cinematic .card{
   flex-wrap:wrap;
 }
 .cake{
-  width: 260px;
+  width: 320px;
   max-width: 92%;
   border-radius: 18px;
-  background: rgba(0,0,0,.18);
-  border: 1px solid rgba(255,255,255,.14);
-  padding: 14px 14px 12px;
+  background: rgba(255,255,255,.08); /* ✅ more visible */
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 14px 14px 14px;
   position: relative;
   box-shadow: 0 18px 44px rgba(0,0,0,.20);
 }
 .cakeTop{
-  height: 20px;
+  height: 18px;
   border-radius: 14px;
-  background: linear-gradient(90deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
+  background: linear-gradient(90deg, rgba(255,255,255,.28), rgba(255,255,255,.12));
   margin-bottom: 10px;
 }
 .cakeBody{
-  height: 56px;
+  height: 70px; /* ✅ taller so candle is visible */
   border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(0,0,0,.08));
+  background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.06));
   position: relative;
   overflow:hidden;
-  cursor:pointer; /* ✅ make cake feel clickable too */
 }
 .sprinkle{
   position:absolute;
-  top: 8px;
-  width: 8px; height: 3px;
+  top: 10px;
+  width: 10px; height: 4px;
   border-radius: 999px;
-  background: rgba(255,255,255,.75);
-  opacity:.9;
+  opacity:.95;
 }
 .candle{
   position:absolute;
   left:50%;
-  top:-34px;
+  top:-42px; /* ✅ raise candle */
   transform: translateX(-50%);
-  width: 16px;
-  height: 38px;
+  width: 18px;
+  height: 44px;
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,255,255,.55));
-  box-shadow: 0 8px 16px rgba(0,0,0,.20);
+  background: linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,160,220,.70));
+  box-shadow: 0 10px 18px rgba(0,0,0,.22);
+  z-index: 3;
 }
 .wick{
   position:absolute;
@@ -382,23 +380,20 @@ body.cinematic .card{
   transform: translateX(-50%);
   width: 3px; height: 8px;
   border-radius: 2px;
-  background: rgba(30,30,30,.8);
+  background: rgba(30,30,30,.85);
 }
 .flame{
   position:absolute;
   left:50%;
-  top:-24px;
+  top:-28px;
   transform: translateX(-50%);
-  width: 18px; height: 26px;
+  width: 22px; height: 30px;
   border-radius: 50% 50% 50% 50%;
-  background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.9), rgba(255,200,80,.9) 45%, rgba(255,90,140,.9) 100%);
-  filter: drop-shadow(0 0 10px rgba(255,180,90,.95)) drop-shadow(0 0 18px rgba(255,120,200,.55));
+  background: radial-gradient(circle at 40% 35%, rgba(255,255,255,.95), rgba(255,210,90,.92) 45%, rgba(255,90,140,.92) 100%);
+  filter: drop-shadow(0 0 12px rgba(255,200,90,.95)) drop-shadow(0 0 20px rgba(255,120,200,.60));
   animation: flicker 120ms infinite alternate;
   cursor:pointer;
-
-  /* ✅ ensure it always receives clicks */
-  pointer-events:auto;
-  z-index:3;
+  z-index: 4;
 }
 @keyframes flicker{
   from{ transform: translateX(-50%) scale(1) rotate(-2deg); opacity: .95; }
@@ -411,11 +406,9 @@ body.cinematic .card{
   transform: translateX(-50%);
   font-size: 18px;
   opacity:0;
-  filter: blur(0.2px);
+  z-index: 4;
 }
-.smoke.run{
-  animation: smokeUp 1200ms ease-out forwards;
-}
+.smoke.run{ animation: smokeUp 1200ms ease-out forwards; }
 @keyframes smokeUp{
   0%{ opacity:0; transform: translateX(-50%) translateY(0) scale(.9); }
   15%{ opacity:.75; }
@@ -426,6 +419,7 @@ body.cinematic .card{
   font-size: 13px;
   opacity: .92;
   text-shadow: 0 8px 22px rgba(0,0,0,.35);
+  max-width: 38ch;
 }
 
 /* ===== Hidden Photo Reveal ===== */
@@ -434,13 +428,25 @@ body.cinematic .card{
   display:none;
 }
 .photoWrap.show{ display:block; }
+
+/* ✅ center photos */
+.photoGrid{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:flex-start;
+  flex-wrap:wrap;
+}
+
 .photo{
   width:min(520px, 100%);
+  margin: 0 auto; /* ✅ centered */
   border-radius: 18px;
   border:1px solid rgba(255,255,255,.18);
   box-shadow: 0 18px 50px rgba(0,0,0,.22);
   overflow:hidden;
   background: rgba(0,0,0,.18);
+  cursor:pointer;
 }
 .photo img{
   width:100%;
@@ -455,8 +461,27 @@ body.cinematic .card{
   filter: blur(0) brightness(1);
   transform: scale(1);
 }
-.photoCaption{
-  padding: 10px 12px;
+
+/* ✅ clickable "Secret present" */
+.secretBtn{
+  display:inline-flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin: 12px auto 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.18);
+  box-shadow: 0 14px 30px rgba(0,0,0,.14);
+  font-weight: 900;
+  cursor:pointer;
+  user-select:none;
+}
+.secretBtn:active{ transform: translateY(1px); }
+
+.secretNote{
+  margin-top: 8px;
   font-weight: 700;
   opacity: .92;
   text-align:center;
@@ -482,6 +507,39 @@ body.cinematic .card{
   letter-spacing: .2px;
 }
 
+/* ===== Lightbox ===== */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  z-index: 10;
+}
+.lightbox.show{ display:flex; }
+.lightbox img{
+  max-width: min(980px, 96vw);
+  max-height: 90vh;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: 0 30px 90px rgba(0,0,0,.45);
+}
+.lightboxHint{
+  position:fixed;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 800;
+  opacity: .9;
+  background: rgba(0,0,0,.28);
+  border: 1px solid rgba(255,255,255,.16);
+  padding: 8px 12px;
+  border-radius: 999px;
+  z-index: 11;
+}
+
 /* Mobile hide stickers */
 @media(max-width:820px){
   .side{display:none;}
@@ -498,7 +556,7 @@ body.cinematic .card{
     <button id="starBtn" type="button">⭐ Starry</button>
   </div>
 
-  <!-- Left Stickers (MORE) -->
+  <!-- Left Stickers -->
   <div class="side left">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -508,7 +566,7 @@ body.cinematic .card{
     </div>
   </div>
 
-  <!-- Right Stickers (MORE) -->
+  <!-- Right Stickers -->
   <div class="side right">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -534,14 +592,14 @@ body.cinematic .card{
 
     <!-- Candle (appears after Continue) -->
     <div class="candleWrap hidden" id="candleWrap">
-      <div class="cake" aria-label="birthday cake">
+      <div class="cake" aria-label="birthday cake" id="cake">
         <div class="cakeTop"></div>
         <div class="cakeBody" id="cakeBody">
-          <span class="sprinkle" style="left:14%; background:rgba(255,120,200,.9)"></span>
+          <span class="sprinkle" style="left:14%; background:rgba(255,120,200,.95)"></span>
           <span class="sprinkle" style="left:28%; background:rgba(255,220,140,.95)"></span>
-          <span class="sprinkle" style="left:44%; background:rgba(140,240,255,.9)"></span>
-          <span class="sprinkle" style="left:62%; background:rgba(255,255,255,.85)"></span>
-          <span class="sprinkle" style="left:78%; background:rgba(255,120,200,.9)"></span>
+          <span class="sprinkle" style="left:44%; background:rgba(140,240,255,.95)"></span>
+          <span class="sprinkle" style="left:62%; background:rgba(255,255,255,.90)"></span>
+          <span class="sprinkle" style="left:78%; background:rgba(255,120,200,.95)"></span>
 
           <div class="candle">
             <div class="wick"></div>
@@ -559,10 +617,21 @@ body.cinematic .card{
 
     <!-- Photo reveal -->
     <div class="photoWrap" id="photoWrap">
-      <div class="photo" id="photoBox">
-        <img id="photoImg" src="photo.jpg" alt="A special photo" />
+      <div class="photoGrid">
+        <!-- Photo 1 -->
+        <div class="photo" id="photoBox1" data-full="photo.jpg">
+          <img id="photoImg1" src="photo.jpg" alt="A special photo" />
+        </div>
+
+        <!-- Photo 2 (hidden until secret clicked) -->
+        <div class="photo hidden" id="photoBox2" data-full="photo2.jpg">
+          <img id="photoImg2" src="photo2.jpg" alt="A secret photo" />
+        </div>
       </div>
-      <div class="photoCaption">A little memory for you 💗</div>
+
+      <!-- ✅ clickable text/button -->
+      <div class="secretBtn" id="secretBtn" role="button" tabindex="0">🎁 Secret Present</div>
+      <div class="secretNote" id="secretNote">Tap to open the second surprise 💗</div>
     </div>
 
     <!-- Love counter -->
@@ -571,6 +640,13 @@ body.cinematic .card{
     </div>
   </div>
 
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <img id="lightboxImg" alt="Full size photo" />
+  </div>
+  <div class="lightboxHint" id="lightboxHint" style="display:none;">Click anywhere to close</div>
+
+  <!-- Audio files in the SAME folder as index.html -->
   <audio id="song" src="birthday.mp3" preload="auto"></audio>
   <audio id="click" src="click.mp3" preload="auto"></audio>
 
@@ -578,7 +654,7 @@ body.cinematic .card{
 /* =========================
    SETTINGS YOU CAN EDIT
 ========================= */
-const LOVE_START = new Date("2024-01-01T00:00:00"); // <-- change date/time here
+const LOVE_START = new Date("2024-01-01T00:00:00"); // change date/time here
 const TYPE_SPEED = 18;
 const SONG_MAX_VOL = 0.8;
 
@@ -595,10 +671,15 @@ const candleWrap = document.getElementById("candleWrap");
 const flame = document.getElementById("flame");
 const smoke = document.getElementById("smoke");
 const candleHint = document.getElementById("candleHint");
-const cakeBody = document.getElementById("cakeBody");
+const cake = document.getElementById("cake");
 
 const photoWrap = document.getElementById("photoWrap");
-const photoBox = document.getElementById("photoBox");
+const photoBox1 = document.getElementById("photoBox1");
+const photoImg1 = document.getElementById("photoImg1");
+const photoBox2 = document.getElementById("photoBox2");
+const photoImg2 = document.getElementById("photoImg2");
+const secretBtn = document.getElementById("secretBtn");
+const secretNote = document.getElementById("secretNote");
 
 const counterRow = document.getElementById("counterRow");
 const counterText = document.getElementById("counterText");
@@ -606,6 +687,11 @@ const counterText = document.getElementById("counterText");
 const starBtn = document.getElementById("starBtn");
 const starsCanvas = document.getElementById("starsCanvas");
 const confettiCanvas = document.getElementById("confettiCanvas");
+
+/* Lightbox */
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const lightboxHint = document.getElementById("lightboxHint");
 
 /* =========================
    CINEMATIC INTRO ON LOAD
@@ -625,7 +711,7 @@ starBtn.addEventListener("click", ()=>{
 });
 
 /* =========================
-   STARS CANVAS
+   STARS CANVAS (deep sky blue)
 ========================= */
 const sctx = starsCanvas.getContext("2d");
 let stars = [];
@@ -634,7 +720,7 @@ function resizeStars(){
   starsCanvas.height = window.innerHeight * devicePixelRatio;
   starsCanvas.style.width = window.innerWidth + "px";
   starsCanvas.style.height = window.innerHeight + "px";
-  const count = Math.floor((window.innerWidth * window.innerHeight) / 14000);
+  const count = Math.floor((window.innerWidth * window.innerHeight) / 12000);
   stars = Array.from({length: count}, ()=>({
     x: Math.random() * starsCanvas.width,
     y: Math.random() * starsCanvas.height,
@@ -645,7 +731,13 @@ function resizeStars(){
 }
 function drawStars(){
   sctx.clearRect(0,0,starsCanvas.width, starsCanvas.height);
-  sctx.fillStyle = "rgba(0,0,0,0.12)";
+
+  // ✅ deep sky gradient background
+  const g = sctx.createLinearGradient(0,0,0,starsCanvas.height);
+  g.addColorStop(0, "rgba(6,26,58,0.92)");
+  g.addColorStop(0.55, "rgba(10,37,80,0.88)");
+  g.addColorStop(1, "rgba(4,11,26,0.96)");
+  sctx.fillStyle = g;
   sctx.fillRect(0,0,starsCanvas.width, starsCanvas.height);
 
   for(const st of stars){
@@ -734,13 +826,15 @@ function playSongFadeIn(audio, duration = 2500){
 }
 
 /* =========================
-   TYPEWRITER
+   TYPEWRITER (sentence-by-sentence)
 ========================= */
 function splitIntoSentences(paragraph){
-  const parts = paragraph.replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?\s*/g);
+  const parts = paragraph
+    .replace(/\s+/g, " ")
+    .trim()
+    .match(/[^.!?]+[.!?]?\s*/g);
   return parts ? parts.map(s=>s.trim()).filter(Boolean) : [paragraph.trim()];
 }
-
 async function typeLine(el, textToType){
   el.textContent = "";
   for(let i=0;i<textToType.length;i++){
@@ -751,7 +845,9 @@ async function typeLine(el, textToType){
 async function typewriterMessage(container, paragraphs){
   container.innerHTML = "";
   const lines = [];
-  paragraphs.forEach(p => splitIntoSentences(p).forEach(s => lines.push(s)));
+  paragraphs.forEach(p => {
+    splitIntoSentences(p).forEach(sentence => lines.push(sentence));
+  });
 
   for(const lineText of lines){
     const line = document.createElement("div");
@@ -780,7 +876,8 @@ function formatDuration(ms){
 function startCounter(){
   counterRow.classList.remove("hidden");
   const tick = ()=>{
-    const diff = new Date() - LOVE_START;
+    const now = new Date();
+    const diff = now - LOVE_START;
     counterText.textContent = `⏳ Love counter: ${formatDuration(diff)}`;
   };
   tick();
@@ -788,7 +885,7 @@ function startCounter(){
 }
 
 /* =========================
-   CANDLE BLOW
+   CANDLE BLOW (click flame or cake)
 ========================= */
 let candleBlown = false;
 function blowCandle(){
@@ -798,57 +895,96 @@ function blowCandle(){
   flame.style.transition = "opacity 450ms ease, transform 450ms ease";
   flame.style.opacity = "0";
   flame.style.transform = "translateX(-50%) scale(.7)";
-
   smoke.classList.remove("run");
   void smoke.offsetWidth;
   smoke.classList.add("run");
 
   candleHint.textContent = "A wish for you… 💫";
 
+  // ✅ reveal photo centered
   setTimeout(()=>{
     photoWrap.classList.add("show");
-    setTimeout(()=>photoBox.classList.add("revealed"), 180);
+    setTimeout(()=>photoBox1.classList.add("revealed"), 180);
   }, 650);
 }
 flame.addEventListener("click", blowCandle);
+cake.addEventListener("click", blowCandle); // ✅ cake clickable too
 
-/* ✅ FIX: also allow clicking the cake area */
-cakeBody.addEventListener("click", blowCandle);
+/* =========================
+   SECRET PRESENT (show 2nd photo)
+========================= */
+function showSecondPhoto(){
+  // if already shown, do nothing
+  if(!photoBox2.classList.contains("hidden")) return;
 
-/* ✅ FIX: keyboard fallback */
-document.addEventListener("keydown", (e)=>{
-  if(e.key.toLowerCase() === "b") blowCandle();
-});
+  photoBox2.classList.remove("hidden");
+  // start reveal animation
+  setTimeout(()=>photoBox2.classList.add("revealed"), 80);
+
+  secretNote.textContent = "Now you have two memories 💞";
+}
+secretBtn.addEventListener("click", showSecondPhoto);
+secretBtn.addEventListener("keydown", (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); showSecondPhoto(); }});
+
+/* =========================
+   LIGHTBOX (full size view)
+========================= */
+function openLightbox(src){
+  lightboxImg.src = src;
+  lightbox.classList.add("show");
+  lightboxHint.style.display = "block";
+  lightbox.setAttribute("aria-hidden", "false");
+}
+function closeLightbox(){
+  lightbox.classList.remove("show");
+  lightboxHint.style.display = "none";
+  lightbox.setAttribute("aria-hidden", "true");
+  lightboxImg.src = "";
+}
+lightbox.addEventListener("click", closeLightbox);
+
+photoBox1.addEventListener("click", ()=>openLightbox(photoBox1.dataset.full));
+photoBox2.addEventListener("click", ()=>openLightbox(photoBox2.dataset.full));
 
 /* =========================
    MAIN CLICK (Continue)
 ========================= */
 btn.onclick = async ()=>{
+  // click sound
   try{
     click.currentTime = 0;
     click.volume = 0.95;
     click.play().catch(()=>{});
   }catch(e){}
 
+  // song fade-in
   playSongFadeIn(song, 2500);
+
+  // cinematic boost
   document.body.classList.add("cinematic");
 
+  // confetti burst from button center
   const r = btn.getBoundingClientRect();
   const cx = (r.left + r.width/2) * devicePixelRatio;
   const cy = (r.top + r.height/2) * devicePixelRatio;
   confettiBurst(cx, cy);
 
+  // hide intro and button
   intro.style.display = "none";
   btn.classList.add("fade");
   setTimeout(()=>btn.style.display="none", 350);
 
+  // show candle section first
   candleWrap.classList.remove("hidden");
 
+  // show message container
   text.classList.remove("hidden");
   requestAnimationFrame(()=>text.classList.add("show"));
 
+  // start love counter
   startCounter();
 
+  // Typewriter message
   const paragraphs = [
     "Happy Birthday to the girl who changed my world.",
     "You are the most beautiful chapter of my life. Every day with you feels like a blessing, but today is extra special because it’s the day the world received you.",
@@ -858,11 +994,6 @@ btn.onclick = async ()=>{
   ];
 
   await typewriterMessage(text, paragraphs);
-
-  /* ✅ optional: gently scroll inside card to show the candle/message on small screens */
-  setTimeout(()=>{
-    document.querySelector(".card")?.scrollTo({ top: 99999, behavior:"smooth" });
-  }, 250);
 };
 </script>
 
