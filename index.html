@@ -41,10 +41,16 @@ body{
   background:
     radial-gradient(900px 520px at 50% 26%, rgba(255,255,255,.18), transparent 62%),
     linear-gradient(160deg,var(--deep),var(--soft));
+
   display:flex;
-  align-items:center;
   justify-content:center;
-  overflow-y:auto; /* ✅ allow vertical scroll */
+
+  /* ✅ FIX #2: allow full scrolling to bottom */
+  align-items:flex-start;
+  min-height:100vh;
+  padding: 28px 0 80px;
+
+  overflow-y:auto;
   position:relative;
 }
 
@@ -238,7 +244,7 @@ body.cinematic .card{
 .intro{margin:10px 0 8px; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 .question{margin:10px 0 14px;font-weight:800; text-shadow:0 8px 22px rgba(0,0,0,.35);}
 
-/* Floating Name Effect (only for the card background) */
+/* Floating Name Effect (card bg) */
 .floatingName{
   position:absolute;
   inset:0;
@@ -305,11 +311,11 @@ body.cinematic .card{
   transition:.8s;
   position:relative;
   z-index:2;
-  overflow:hidden; /* ✅ keep watermark inside */
+  overflow:hidden;
 }
 #giftText.show{opacity:1;transform:translateY(0);}
 
-/* ✅ LOCKED CENTER watermark INSIDE message box, only floating */
+/* watermark locked */
 #giftText::before{
   content: attr(data-watermark);
   position:absolute;
@@ -328,18 +334,9 @@ body.cinematic .card{
   0%,100%{ transform: translate(-50%, -50%) rotate(-8deg) translateY(0); }
   50%{     transform: translate(-50%, -50%) rotate(-8deg) translateY(-10px); }
 }
+#giftText > *{ position:relative; z-index:1; }
 
-/* ✅ make typed lines stay above watermark */
-#giftText > *{
-  position:relative;
-  z-index:1;
-}
-
-/* Typewriter lines */
-.line{
-  margin:0 0 16px 0;
-  min-height: 1em;
-}
+.line{ margin:0 0 16px 0; min-height: 1em; }
 .line:last-child{ margin-bottom: 10px; }
 
 .signature{
@@ -379,7 +376,9 @@ body.cinematic .card{
   border-radius: 14px;
   background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(0,0,0,.06));
   position: relative;
-  overflow:hidden;
+
+  /* ✅ FIX #1: allow candle to be visible above cake */
+  overflow: visible;
 }
 .sprinkle{
   position:absolute;
@@ -449,13 +448,9 @@ body.cinematic .card{
 }
 
 /* ===== Hidden Photo Reveal ===== */
-.photoWrap{
-  margin-top: 14px;
-  display:none;
-}
+.photoWrap{ margin-top: 14px; display:none; }
 .photoWrap.show{ display:block; }
 
-/* ✅ center photos */
 .photoGrid{
   display:flex;
   gap:14px;
@@ -488,7 +483,6 @@ body.cinematic .card{
   transform: scale(1);
 }
 
-/* ✅ clickable "Secret present" */
 .secretBtn{
   display:inline-flex;
   gap:10px;
@@ -566,7 +560,6 @@ body.cinematic .card{
   z-index: 11;
 }
 
-/* Mobile hide stickers */
 @media(max-width:820px){
   .side{display:none;}
 }
@@ -582,7 +575,6 @@ body.cinematic .card{
     <button id="starBtn" type="button">⭐ Starry</button>
   </div>
 
-  <!-- Left Stickers -->
   <div class="side left">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -592,7 +584,6 @@ body.cinematic .card{
     </div>
   </div>
 
-  <!-- Right Stickers -->
   <div class="side right">
     <div class="stack">
       <div class="float">🎈</div><div class="float">🎉</div><div class="float">🎂</div><div class="float">🎁</div>
@@ -616,7 +607,6 @@ body.cinematic .card{
 
     <button id="continueBtn" type="button">Continue 🎁</button>
 
-    <!-- Candle (appears after Continue) -->
     <div class="candleWrap hidden" id="candleWrap">
       <div class="cake" aria-label="birthday cake" id="cake">
         <div class="cakeTop"></div>
@@ -638,55 +628,41 @@ body.cinematic .card{
       <div class="candleHint" id="candleHint">✨ Click the flame (or cake) to blow the candle</div>
     </div>
 
-    <!-- Message -->
     <div id="giftText" class="hidden" data-watermark="Inzali"></div>
 
-    <!-- Photo reveal -->
     <div class="photoWrap" id="photoWrap">
       <div class="photoGrid">
-        <!-- Photo 1 -->
         <div class="photo" id="photoBox1" data-full="photo.jpg">
           <img id="photoImg1" src="photo.jpg" alt="A special photo" />
         </div>
 
-        <!-- Photo 2 (hidden until secret clicked) -->
         <div class="photo hidden" id="photoBox2" data-full="photo2.jpg">
           <img id="photoImg2" src="photo2.jpg" alt="A secret photo" />
         </div>
       </div>
 
-      <!-- ✅ clickable text/button -->
       <div class="secretBtn" id="secretBtn" role="button" tabindex="0">🎁 Secret Present</div>
       <div class="secretNote" id="secretNote">Tap to open the second surprise 💗</div>
     </div>
 
-    <!-- Love counter -->
     <div class="counter hidden" id="counterRow">
       <div class="pill" id="counterText">⏳ Love counter: loading…</div>
     </div>
   </div>
 
-  <!-- Lightbox -->
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <img id="lightboxImg" alt="Full size photo" />
   </div>
   <div class="lightboxHint" id="lightboxHint" style="display:none;">Click anywhere to close</div>
 
-  <!-- Audio files in the SAME folder as index.html -->
   <audio id="song" src="birthday.mp3" preload="auto"></audio>
   <audio id="click" src="click.mp3" preload="auto"></audio>
 
 <script>
-/* =========================
-   SETTINGS YOU CAN EDIT
-========================= */
-const LOVE_START = new Date("2024-01-01T00:00:00"); // change date/time here
+const LOVE_START = new Date("2024-01-01T00:00:00");
 const TYPE_SPEED = 18;
 const SONG_MAX_VOL = 0.8;
 
-/* =========================
-   ELEMENTS
-========================= */
 const btn = document.getElementById("continueBtn");
 const text = document.getElementById("giftText");
 const intro = document.getElementById("introText");
@@ -713,21 +689,14 @@ const starBtn = document.getElementById("starBtn");
 const starsCanvas = document.getElementById("starsCanvas");
 const confettiCanvas = document.getElementById("confettiCanvas");
 
-/* Lightbox */
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightboxImg");
 const lightboxHint = document.getElementById("lightboxHint");
 
-/* =========================
-   CINEMATIC INTRO ON LOAD
-========================= */
 window.addEventListener("load", () => {
   setTimeout(()=>document.body.classList.add("cinematic"), 220);
 });
 
-/* =========================
-   STAR BACKGROUND MODE
-========================= */
 let starOn = false;
 starBtn.addEventListener("click", ()=>{
   starOn = !starOn;
@@ -735,9 +704,6 @@ starBtn.addEventListener("click", ()=>{
   starBtn.textContent = starOn ? "✨ Normal" : "⭐ Starry";
 });
 
-/* =========================
-   STARS CANVAS (deep sky blue)
-========================= */
 const sctx = starsCanvas.getContext("2d");
 let stars = [];
 function resizeStars(){
@@ -778,9 +744,6 @@ window.addEventListener("resize", resizeStars);
 resizeStars();
 drawStars();
 
-/* =========================
-   CONFETTI (canvas)
-========================= */
 const cctx = confettiCanvas.getContext("2d");
 let confetti = [];
 function resizeConfetti(){
@@ -831,9 +794,6 @@ function drawConfetti(){
 }
 drawConfetti();
 
-/* =========================
-   AUDIO
-========================= */
 function playSongFadeIn(audio, duration = 2500){
   audio.volume = 0;
   audio.currentTime = 0;
@@ -841,7 +801,6 @@ function playSongFadeIn(audio, duration = 2500){
   const steps = 24;
   const stepTime = duration / steps;
   let i = 0;
-
   const fade = setInterval(()=>{
     i++;
     audio.volume = Math.min(SONG_MAX_VOL, (i/steps) * SONG_MAX_VOL);
@@ -849,14 +808,8 @@ function playSongFadeIn(audio, duration = 2500){
   }, stepTime);
 }
 
-/* =========================
-   TYPEWRITER (sentence-by-sentence)
-========================= */
 function splitIntoSentences(paragraph){
-  const parts = paragraph
-    .replace(/\s+/g, " ")
-    .trim()
-    .match(/[^.!?]+[.!?]?\s*/g);
+  const parts = paragraph.replace(/\s+/g, " ").trim().match(/[^.!?]+[.!?]?\s*/g);
   return parts ? parts.map(s=>s.trim()).filter(Boolean) : [paragraph.trim()];
 }
 async function typeLine(el, textToType){
@@ -869,26 +822,19 @@ async function typeLine(el, textToType){
 async function typewriterMessage(container, paragraphs){
   container.innerHTML = "";
   const lines = [];
-  paragraphs.forEach(p => {
-    splitIntoSentences(p).forEach(sentence => lines.push(sentence));
-  });
-
+  paragraphs.forEach(p => splitIntoSentences(p).forEach(sentence => lines.push(sentence)));
   for(const lineText of lines){
     const line = document.createElement("div");
     line.className = "line";
     container.appendChild(line);
     await typeLine(line, lineText);
   }
-
   const sig = document.createElement("div");
   sig.className = "signature";
   container.appendChild(sig);
   await typeLine(sig, "— Canzy 💛");
 }
 
-/* =========================
-   LOVE COUNTER
-========================= */
 function formatDuration(ms){
   const s = Math.floor(ms/1000);
   const days = Math.floor(s / 86400);
@@ -908,9 +854,6 @@ function startCounter(){
   setInterval(tick, 1000);
 }
 
-/* =========================
-   CANDLE BLOW (click flame or cake)
-========================= */
 let candleBlown = false;
 function blowCandle(){
   if(candleBlown) return;
@@ -933,9 +876,6 @@ function blowCandle(){
 flame.addEventListener("click", blowCandle);
 cake.addEventListener("click", blowCandle);
 
-/* =========================
-   SECRET PRESENT (show 2nd photo)
-========================= */
 function showSecondPhoto(){
   if(!photoBox2.classList.contains("hidden")) return;
   photoBox2.classList.remove("hidden");
@@ -945,9 +885,6 @@ function showSecondPhoto(){
 secretBtn.addEventListener("click", showSecondPhoto);
 secretBtn.addEventListener("keydown", (e)=>{ if(e.key==="Enter" || e.key===" "){ e.preventDefault(); showSecondPhoto(); }});
 
-/* =========================
-   LIGHTBOX
-========================= */
 function openLightbox(src){
   lightboxImg.src = src;
   lightbox.classList.add("show");
@@ -964,48 +901,31 @@ lightbox.addEventListener("click", closeLightbox);
 photoBox1.addEventListener("click", ()=>openLightbox(photoBox1.dataset.full));
 photoBox2.addEventListener("click", ()=>openLightbox(photoBox2.dataset.full));
 
-/* =========================
-   MAIN CLICK (Continue)
-========================= */
 btn.onclick = async ()=>{
-  // click sound
   try{
     click.currentTime = 0;
     click.volume = 0.95;
     click.play().catch(()=>{});
   }catch(e){}
 
-  // song fade-in
   playSongFadeIn(song, 2500);
-
-  // cinematic boost
   document.body.classList.add("cinematic");
 
-  // confetti burst from button center
   const r = btn.getBoundingClientRect();
   const cx = (r.left + r.width/2) * devicePixelRatio;
   const cy = (r.top + r.height/2) * devicePixelRatio;
   confettiBurst(cx, cy);
 
-  // ✅ remove "Ready for your surprise..." so candle won't overlap it
   questionText.style.display = "none";
-
-  // hide intro and button
   intro.style.display = "none";
   btn.classList.add("fade");
   setTimeout(()=>btn.style.display="none", 350);
 
-  // show candle section first
   candleWrap.classList.remove("hidden");
-
-  // show message container
   text.classList.remove("hidden");
   requestAnimationFrame(()=>text.classList.add("show"));
-
-  // start love counter
   startCounter();
 
-  // Typewriter message
   const paragraphs = [
     "Happy Birthday to the girl who changed my world.",
     "You are the most beautiful chapter of my life. Every day with you feels like a blessing, but today is extra special because it’s the day the world received you.",
@@ -1013,7 +933,6 @@ btn.onclick = async ()=>{
     "May your birthday be as soft, warm, and magical as your hugs.",
     "I love you more than words can explain. 🎂💘"
   ];
-
   await typewriterMessage(text, paragraphs);
 };
 </script>
