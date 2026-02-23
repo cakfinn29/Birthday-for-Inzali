@@ -266,9 +266,25 @@ function reveal(paragraphs){
   },70);
 }
 
+  function playSongFadeIn(audio, duration = 2500){
+  audio.volume = 0;
+  audio.currentTime = 0;
+  audio.play().catch(()=>{});
+
+  const steps = 20;
+  const stepTime = duration / steps;
+  let i = 0;
+
+  const fade = setInterval(()=>{
+    i++;
+    audio.volume = Math.min(0.8, i / steps * 0.8);
+    if(i >= steps) clearInterval(fade);
+  }, stepTime);
+}
+  
 btn.onclick=()=>{
   click.play().catch(()=>{});
-  song.play().catch(()=>{});
+  playSongFadeIn(song, 2500);
 
   intro.style.display="none";
 
