@@ -33,16 +33,17 @@ body{
   position:relative;
 }
 
-/* ===== Floating Side Stickers ===== */
+/* ===== MORE Floating Side Stickers ===== */
 .side{
   position:fixed;
   top:0;
   bottom:0;
-  width:220px;
+  width:260px;
   pointer-events:none;
   display:flex;
   align-items:center;
   justify-content:center;
+  opacity:0.95;
 }
 .side.left{left:0;}
 .side.right{right:0;transform:scaleX(-1);}
@@ -51,19 +52,45 @@ body{
 
 .float{
   position:absolute;
-  font-size:42px;
+  font-size:44px;
   opacity:0;
-  animation:rise 9s linear infinite;
+  animation:rise 6.5s linear infinite; /* faster = more frequent */
 }
 
-.float:nth-child(odd){animation-duration:11s;}
-.float:nth-child(even){animation-duration:8s;}
+/* spread across width */
+.float:nth-child(1){ left:12%; }
+.float:nth-child(2){ left:38%; }
+.float:nth-child(3){ left:64%; }
+.float:nth-child(4){ left:22%; }
+.float:nth-child(5){ left:78%; }
+.float:nth-child(6){ left:48%; }
+.float:nth-child(7){ left:16%; }
+.float:nth-child(8){ left:72%; }
+.float:nth-child(9){ left:34%; }
+.float:nth-child(10){ left:58%; }
+
+/* varied timing */
+.float:nth-child(odd){animation-duration:7.8s;}
+.float:nth-child(even){animation-duration:6.1s;}
+.float:nth-child(3n){animation-duration:8.8s;}
+.float:nth-child(4n){animation-duration:6.8s;}
+
+.float:nth-child(1){ animation-delay:.1s; }
+.float:nth-child(2){ animation-delay:1.0s; }
+.float:nth-child(3){ animation-delay:2.0s; }
+.float:nth-child(4){ animation-delay:3.0s; }
+.float:nth-child(5){ animation-delay:4.0s; }
+.float:nth-child(6){ animation-delay:5.0s; }
+.float:nth-child(7){ animation-delay:6.0s; }
+.float:nth-child(8){ animation-delay:7.0s; }
+.float:nth-child(9){ animation-delay:8.0s; }
+.float:nth-child(10){animation-delay:9.0s; }
 
 @keyframes rise{
-  0%{transform:translateY(110vh);opacity:0;}
-  12%{opacity:.95;}
-  88%{opacity:.95;}
-  100%{transform:translateY(-20vh);opacity:0;}
+  0%{transform:translateY(110vh) rotate(0deg);opacity:0;}
+  10%{opacity:.95;}
+  90%{opacity:.95;}
+  100%{transform:translateY(-20vh) rotate(28deg);opacity:0;}
 }
 
 /* ===== Card ===== */
@@ -153,7 +180,7 @@ body{
 
 <body>
 
-<!-- Left Stickers -->
+<!-- Left Stickers (MORE) -->
 <div class="side left">
   <div class="stack">
     <div class="float">🎈</div>
@@ -161,10 +188,15 @@ body{
     <div class="float">🎂</div>
     <div class="float">🎁</div>
     <div class="float">✨</div>
+    <div class="float">🎊</div>
+    <div class="float">💝</div>
+    <div class="float">⭐</div>
+    <div class="float">💫</div>
+    <div class="float">🌸</div>
   </div>
 </div>
 
-<!-- Right Stickers -->
+<!-- Right Stickers (MORE) -->
 <div class="side right">
   <div class="stack">
     <div class="float">🎈</div>
@@ -172,6 +204,11 @@ body{
     <div class="float">🎂</div>
     <div class="float">🎁</div>
     <div class="float">✨</div>
+    <div class="float">🎊</div>
+    <div class="float">💝</div>
+    <div class="float">⭐</div>
+    <div class="float">💫</div>
+    <div class="float">🌸</div>
   </div>
 </div>
 
@@ -201,53 +238,53 @@ const song=document.getElementById("song");
 const click=document.getElementById("click");
 
 function reveal(paragraphs){
- text.innerHTML="";
- const words=[];
- paragraphs.forEach(p=>{
-  const div=document.createElement("div");
-  div.className="para";
-  p.split(" ").forEach(w=>{
-    const s=document.createElement("span");
-    s.className="word";
-    s.textContent=w;
-    div.appendChild(s);
-    words.push(s);
+  text.innerHTML="";
+  const words=[];
+  paragraphs.forEach(p=>{
+    const div=document.createElement("div");
+    div.className="para";
+    p.trim().split(/\s+/).forEach(w=>{
+      const s=document.createElement("span");
+      s.className="word";
+      s.textContent=w;
+      div.appendChild(s);
+      words.push(s);
+    });
+    text.appendChild(div);
   });
-  text.appendChild(div);
- });
 
- const sign=document.createElement("div");
- sign.className="signature";
- sign.textContent="— Canzy 💛";
- text.appendChild(sign);
+  const sign=document.createElement("div");
+  sign.className="signature";
+  sign.textContent="— Canzy 💛";
+  text.appendChild(sign);
 
- let i=0;
- const timer=setInterval(()=>{
-  if(i>=words.length){clearInterval(timer);return;}
-  words[i].classList.add("visible");
-  i++;
- },70);
+  let i=0;
+  const timer=setInterval(()=>{
+    if(i>=words.length){clearInterval(timer);return;}
+    words[i].classList.add("visible");
+    i++;
+  },70);
 }
 
 btn.onclick=()=>{
- click.play().catch(()=>{});
- song.play().catch(()=>{});
+  click.play().catch(()=>{});
+  song.play().catch(()=>{});
 
- intro.style.display="none";
+  intro.style.display="none";
 
- btn.classList.add("fade");
- setTimeout(()=>btn.style.display="none",350);
+  btn.classList.add("fade");
+  setTimeout(()=>btn.style.display="none",350);
 
- text.classList.remove("hidden");
- requestAnimationFrame(()=>text.classList.add("show"));
+  text.classList.remove("hidden");
+  requestAnimationFrame(()=>text.classList.add("show"));
 
- reveal([
-  "Happy Birthday to the girl who changed my world.",
-  "You are the most beautiful chapter of my life. Every day with you feels like a blessing, but today is extra special because it’s the day the world received you.",
-  "Thank you for your love, your smile, your patience, and the way you make my heart feel safe. I promise to stand beside you, support your dreams, and love you more with every passing year.",
-  "May your birthday be as soft, warm, and magical as your hugs.",
-  "I love you more than words can explain. 🎂💘"
- ]);
+  reveal([
+    "Happy Birthday to the girl who changed my world.",
+    "You are the most beautiful chapter of my life. Every day with you feels like a blessing, but today is extra special because it’s the day the world received you.",
+    "Thank you for your love, your smile, your patience, and the way you make my heart feel safe. I promise to stand beside you, support your dreams, and love you more with every passing year.",
+    "May your birthday be as soft, warm, and magical as your hugs.",
+    "I love you more than words can explain. 🎂💘"
+  ]);
 };
 </script>
 
