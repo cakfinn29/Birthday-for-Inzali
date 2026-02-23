@@ -27,10 +27,12 @@ body{
     radial-gradient(900px 520px at 50% 26%, rgba(255,255,255,.18), transparent 62%),
     linear-gradient(160deg,var(--deep),var(--soft));
   display:flex;
-  align-items:center;
+  align-items:flex-start;     /* ✅ allow content to start at top */
   justify-content:center;
-  overflow:hidden;
+  overflow-y:auto;            /* ✅ enable scroll */
+  overflow-x:hidden;
   position:relative;
+  padding: 18px 14px;
 }
 
 /* ===== MORE Floating Side Stickers ===== */
@@ -44,6 +46,7 @@ body{
   align-items:center;
   justify-content:center;
   opacity:0.95;
+  z-index:0;
 }
 .side.left{left:0;}
 .side.right{right:0;transform:scaleX(-1);}
@@ -54,10 +57,10 @@ body{
   position:absolute;
   font-size:44px;
   opacity:0;
-  animation:rise 6.5s linear infinite; /* faster = more frequent */
+  animation:rise 6.5s linear infinite;
+  filter: drop-shadow(0 10px 16px rgba(0,0,0,.18));
 }
 
-/* spread across width */
 .float:nth-child(1){ left:12%; }
 .float:nth-child(2){ left:38%; }
 .float:nth-child(3){ left:64%; }
@@ -69,7 +72,6 @@ body{
 .float:nth-child(9){ left:34%; }
 .float:nth-child(10){ left:58%; }
 
-/* varied timing */
 .float:nth-child(odd){animation-duration:7.8s;}
 .float:nth-child(even){animation-duration:6.1s;}
 .float:nth-child(3n){animation-duration:8.8s;}
@@ -100,10 +102,17 @@ body{
   border:1px solid var(--card-stroke);
   border-radius:24px;
   backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   padding:26px 20px;
   text-align:center;
   position:relative;
   z-index:2;
+
+  /* ✅ scroll inside card if screen is short */
+  max-height: calc(100vh - 36px);
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 20px 70px rgba(0,0,0,.35);
 }
 
 /* Title */
@@ -148,6 +157,7 @@ body{
   padding:18px;
   border-radius:16px;
   background:rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.14);
   opacity:0;
   transform:translateY(10px);
   transition:.8s;
@@ -171,6 +181,180 @@ body{
   font-weight:800;
 }
 
+/* ===== Candle / Cake Section ===== */
+.candleWrap{
+  margin: 14px auto 6px;
+  max-width: 520px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 12px 6px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.16);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.cake{
+  width: 220px;
+  height: 110px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.12);
+  position: relative;
+  overflow: hidden;
+
+  /* ✅ make sure click works */
+  pointer-events:auto;
+  cursor: pointer;
+}
+
+.cakeTop{
+  position:absolute;
+  left: 14px;
+  right: 14px;
+  top: 14px;
+  height: 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+}
+
+.cakeBody{
+  position:absolute;
+  left: 14px;
+  right: 14px;
+  top: 38px;
+  bottom: 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,.10);
+  border: 1px solid rgba(255,255,255,.10);
+
+  pointer-events:auto;
+}
+
+.sprinkle{
+  position:absolute;
+  top: 10px;
+  width: 12px;
+  height: 4px;
+  border-radius: 999px;
+  opacity: .95;
+}
+
+.candle{
+  position:absolute;
+  left: 50%;
+  top: 4px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 34px;
+  border-radius: 6px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.12);
+  pointer-events:auto;
+}
+
+.wick{
+  position:absolute;
+  left:50%;
+  top:-6px;
+  transform: translateX(-50%);
+  width:2px;
+  height:6px;
+  background: rgba(0,0,0,.55);
+  border-radius: 2px;
+}
+
+.flame{
+  position:absolute;
+  left:50%;
+  top:-22px;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 22px;
+  border-radius: 50% 50% 50% 50%;
+  background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.95), rgba(255,200,120,.85) 40%, rgba(255,120,80,.75) 70%, rgba(255,80,120,.55) 100%);
+  filter: drop-shadow(0 0 10px rgba(255,160,120,.8));
+  animation: flicker 900ms ease-in-out infinite;
+
+  /* ✅ always clickable */
+  pointer-events:auto;
+  z-index:5;
+}
+
+@keyframes flicker{
+  0%,100%{ transform: translateX(-50%) scale(1); opacity: .95; }
+  50%{ transform: translateX(-50%) scale(1.08); opacity: 1; }
+}
+
+.smoke{
+  position:absolute;
+  left:50%;
+  top:-26px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  opacity: 0;
+  pointer-events:none;
+}
+.smoke.run{
+  animation: smokeUp 900ms ease-out 1 forwards;
+}
+@keyframes smokeUp{
+  0%{ opacity: 0; transform: translateX(-50%) translateY(6px); }
+  15%{ opacity: .9; }
+  100%{ opacity: 0; transform: translateX(-50%) translateY(-28px); }
+}
+
+.candleHint{
+  flex: 1;
+  min-width: 220px;
+  text-align:left;
+  opacity: .95;
+}
+
+/* fallback blow button */
+#blowBtn{
+  background:rgba(0,0,0,.25);
+  color:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.18);
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:900;
+  cursor:pointer;
+  backdrop-filter: blur(10px);
+}
+
+/* Hidden Photo Reveal */
+.photoWrap{
+  margin: 10px auto 0;
+  max-width: 520px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 900ms ease;
+}
+.photoWrap.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+.photoBox{
+  width: 100%;
+  height: 200px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.06);
+  border: 1px dashed rgba(255,255,255,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: rgba(255,255,255,.78);
+  font-weight: 800;
+  text-align:center;
+  padding: 14px;
+}
+.photoBox.revealed{
+  border-style: solid;
+}
+
 /* Mobile hide stickers */
 @media(max-width:820px){
   .side{display:none;}
@@ -180,7 +364,7 @@ body{
 
 <body>
 
-<!-- Left Stickers (MORE) -->
+<!-- Left Stickers -->
 <div class="side left">
   <div class="stack">
     <div class="float">🎈</div>
@@ -196,7 +380,7 @@ body{
   </div>
 </div>
 
-<!-- Right Stickers (MORE) -->
+<!-- Right Stickers -->
 <div class="side right">
   <div class="stack">
     <div class="float">🎈</div>
@@ -212,7 +396,7 @@ body{
   </div>
 </div>
 
-<div class="card">
+<div class="card" id="card">
   <div class="title">Happy Birthday 🎂</div>
   <div class="sub">A Birthday Gift for <b>Inzali</b> 💝</div>
 
@@ -220,15 +404,50 @@ body{
     Click <b>Continue</b> to open your birthday message 🎁
   </p>
 
-  <div class="question">Ready for your surprise, Inzali? 🎉</div>
+  <div class="question" id="questionText">Ready for your surprise, Inzali? 🎉</div>
 
   <button id="continueBtn">Continue 🎁</button>
+
+  <!-- ✅ Candle section (hidden until Continue) -->
+  <div class="candleWrap hidden" id="candleWrap">
+    <div class="cake" id="cake" aria-label="birthday cake">
+      <div class="cakeTop"></div>
+
+      <div class="cakeBody" id="cakeBody">
+        <span class="sprinkle" style="left:14%; background:rgba(255,120,200,.9)"></span>
+        <span class="sprinkle" style="left:28%; background:rgba(255,220,140,.95)"></span>
+        <span class="sprinkle" style="left:44%; background:rgba(140,240,255,.9)"></span>
+        <span class="sprinkle" style="left:62%; background:rgba(255,255,255,.85)"></span>
+        <span class="sprinkle" style="left:78%; background:rgba(255,120,200,.9)"></span>
+
+        <div class="candle">
+          <div class="wick"></div>
+          <div class="flame" id="flame" title="Click to blow the candle"></div>
+          <div class="smoke" id="smoke">💨</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="candleHint" id="candleHint">✨ Click the flame (or cake) to blow the candle</div>
+
+    <!-- fallback button -->
+    <button id="blowBtn" type="button">Blow Candle 💨</button>
+  </div>
+
+  <!-- ✅ Photo reveal area (hidden until candle blown) -->
+  <div class="photoWrap" id="photoWrap">
+    <div class="photoBox" id="photoBox">
+      Hidden photo reveal area 📸<br>
+      (After candle is blown)
+    </div>
+  </div>
 
   <div id="giftText" class="hidden"></div>
 </div>
 
-<audio id="song" src="birthday.mp3"></audio>
-<audio id="click" src="click.mp3"></audio>
+<!-- ✅ Put your audio files in SAME folder as index.html -->
+<audio id="song" src="birthday.mp3.mp3" preload="auto"></audio>
+<audio id="click" src="click.mp3.mp3" preload="auto"></audio>
 
 <script>
 const btn=document.getElementById("continueBtn");
@@ -236,6 +455,17 @@ const text=document.getElementById("giftText");
 const intro=document.getElementById("introText");
 const song=document.getElementById("song");
 const click=document.getElementById("click");
+const card=document.getElementById("card");
+
+const candleWrap = document.getElementById("candleWrap");
+const cake = document.getElementById("cake");
+const flame = document.getElementById("flame");
+const smoke = document.getElementById("smoke");
+const blowBtn = document.getElementById("blowBtn");
+const candleHint = document.getElementById("candleHint");
+
+const photoWrap = document.getElementById("photoWrap");
+const photoBox  = document.getElementById("photoBox");
 
 function reveal(paragraphs){
   text.innerHTML="";
@@ -266,15 +496,66 @@ function reveal(paragraphs){
   },70);
 }
 
+function playSongFadeIn(audio, duration = 2500){
+  audio.volume = 0;
+  audio.currentTime = 0;
+  audio.play().catch(()=>{});
+
+  const steps = 20;
+  const stepTime = duration / steps;
+  let i = 0;
+
+  const fade = setInterval(()=>{
+    i++;
+    audio.volume = Math.min(0.8, i / steps * 0.8);
+    if(i >= steps) clearInterval(fade);
+  }, stepTime);
+}
+
+/* ✅ Candle blow logic (works by clicking flame OR cake OR button OR pressing B) */
+let candleBlown = false;
+function blowCandle(){
+  if(candleBlown) return;
+  candleBlown = true;
+
+  flame.style.transition = "opacity 450ms ease, transform 450ms ease";
+  flame.style.opacity = "0";
+  flame.style.transform = "translateX(-50%) scale(.7)";
+
+  smoke.classList.remove("run");
+  void smoke.offsetWidth;
+  smoke.classList.add("run");
+
+  candleHint.textContent = "A wish for you… 💫";
+
+  // reveal photo
+  setTimeout(()=>{
+    photoWrap.classList.add("show");
+    setTimeout(()=>photoBox.classList.add("revealed"), 180);
+  }, 650);
+}
+
+flame.addEventListener("click", blowCandle);
+cake.addEventListener("click", blowCandle);
+blowBtn.addEventListener("click", blowCandle);
+document.addEventListener("keydown", (e)=>{
+  if(e.key.toLowerCase()==="b") blowCandle();
+});
+
 btn.onclick=()=>{
-  click.play().catch(()=>{});
-  song.play().catch(()=>{});
+  // sounds
+  try{ click.currentTime=0; click.play().catch(()=>{}); }catch(e){}
+  playSongFadeIn(song, 2500);
 
+  // hide intro + remove button
   intro.style.display="none";
-
   btn.classList.add("fade");
   setTimeout(()=>btn.style.display="none",350);
 
+  // show candle section
+  candleWrap.classList.remove("hidden");
+
+  // show message area
   text.classList.remove("hidden");
   requestAnimationFrame(()=>text.classList.add("show"));
 
@@ -285,6 +566,11 @@ btn.onclick=()=>{
     "May your birthday be as soft, warm, and magical as your hugs.",
     "I love you more than words can explain. 🎂💘"
   ]);
+
+  // ✅ auto-scroll inside the card to show candle + message
+  setTimeout(()=>{
+    card.scrollTo({ top: card.scrollHeight, behavior: "smooth" });
+  }, 350);
 };
 </script>
 
