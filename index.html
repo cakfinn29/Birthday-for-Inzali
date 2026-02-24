@@ -685,18 +685,7 @@ const secretNote = document.getElementById("secretNote");
 
 const counterRow = document.getElementById("counterRow");
 const counterText = document.getElementById("counterText");
-
 const starBtn = document.getElementById("starBtn");
-let starOn = false;
-
-const switchSfx = document.getElementById("switchSfx");
-
-starBtn.addEventListener("click", ()=>{
-  
-  starOn = !starOn;
-
-  document.body.classList.toggle("starry", starOn);
-  starBtn.textContent = starOn ? "✨ Normal" : "⭐ Starry";
 
   // 🔊 play switch sound
   if(switchSfx){
