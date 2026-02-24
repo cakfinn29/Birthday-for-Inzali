@@ -656,6 +656,7 @@ body.cinematic .card{
 
   <audio id="song" src="birthday.mp3.mp3" preload="auto"></audio>
   <audio id="click" src="click.mp3.mp3" preload="auto"></audio>
+  <audio id="switchSfx" src="switch.mp3" preload="auto"></audio>
 
 <script>
 const LOVE_START = new Date("2024-01-01T00:00:00");
@@ -665,9 +666,10 @@ const SONG_MAX_VOL = 0.8;
 const btn = document.getElementById("continueBtn");
 const text = document.getElementById("giftText");
 const intro = document.getElementById("introText");
-const questionText = document.getElementById("questionText");
+const questionText = document.getElementById("questionText");  
 const song = document.getElementById("song");
 const click = document.getElementById("click");
+const switchSfx = document.getElementById("switchSfx");  
 
 const candleWrap = document.getElementById("candleWrap");
 const flame = document.getElementById("flame");
@@ -685,6 +687,24 @@ const counterRow = document.getElementById("counterRow");
 const counterText = document.getElementById("counterText");
 
 const starBtn = document.getElementById("starBtn");
+let starOn = false;
+
+const switchSfx = document.getElementById("switchSfx");
+
+starBtn.addEventListener("click", ()=>{
+  
+  starOn = !starOn;
+
+  document.body.classList.toggle("starry", starOn);
+  starBtn.textContent = starOn ? "✨ Normal" : "⭐ Starry";
+
+  // 🔊 play switch sound
+  if(switchSfx){
+    switchSfx.currentTime = 0;
+    switchSfx.volume = 0.9;
+    switchSfx.play().catch(()=>{});
+  }
+});
 const starsCanvas = document.getElementById("starsCanvas");
 const confettiCanvas = document.getElementById("confettiCanvas");
 
